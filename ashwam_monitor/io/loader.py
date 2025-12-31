@@ -7,10 +7,7 @@ from ..exceptions import DataLoadError
 
 
 def load_jsonl(path: Path, model_class) -> Tuple[List, List[dict]]:
-    """
-    load jsonl file and validate with pydantic
-    returns (valid_records, errors) so we can handle partial failures
-    """
+    # load jsonl file and validate with pydantic, returns (valid_records, errors)
     if not path.exists():
         raise DataLoadError(str(path), "file not found")
 
@@ -56,6 +53,6 @@ def load_gold_labels(path: Path) -> Tuple[List[GoldLabel], List[dict]]:
 
 
 def load_journals_as_dict(path: Path) -> Dict[str, str]:
-    """quick lookup of journal_id -> text"""
+    # quick lookup of journal_id -> text
     journals, _ = load_journals(path)
     return {j.journal_id: j.text for j in journals}

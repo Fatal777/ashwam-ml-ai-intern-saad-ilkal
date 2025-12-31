@@ -195,6 +195,16 @@ def run_drift_analysis(
     if conf_status != DriftStatus.STABLE:
         alerts.append(f"WARNING: confidence distribution shifted (KS p={ks_pval:.4f})")
 
+    # define what normal looks like for each metric
+    normal_defs = {
+        "extraction_volume": "1-2 items per journal, zero_rate < 10%",
+        "uncertainty_rate": "< 40% of items with unknown/low confidence",
+        "domain_mix": "symptom 30-40%, food 20-30%, emotion 20-30%, mind 10-20%",
+        "arousal_distribution": "low 30-40%, medium 30-40%, high 20-30%",
+        "intensity_distribution": "low 20-30%, medium 40-50%, high 20-30%",
+        "confidence_distribution": "mean > 0.6, std < 0.2"
+    }
+
     return DriftReport(
         timestamp=datetime.now(),
         run_id=run_id,
@@ -207,5 +217,6 @@ def run_drift_analysis(
             "js_breakage": thresholds.js_breakage,
             "domain_shift_pct": thresholds.domain_shift_pct,
             "volume_change_pct": thresholds.volume_change_pct
-        }
+        },
+        normal_definitions=normal_defs
     )

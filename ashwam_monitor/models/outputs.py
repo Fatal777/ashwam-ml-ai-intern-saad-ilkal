@@ -13,6 +13,15 @@ class InvariantViolation(BaseModel):
     severity: AlertLevel
 
 
+class InvariantDefinition(BaseModel):
+    name: str
+    description: str
+    why_exists: str
+    risk_mitigated: str
+    failure_action: str
+    threshold: float
+
+
 class InvariantReport(BaseModel):
     timestamp: datetime
     run_id: str
@@ -25,6 +34,7 @@ class InvariantReport(BaseModel):
     violations: List[InvariantViolation]
     alerts: List[str]
     thresholds_used: Dict[str, float]
+    definitions: Optional[List[InvariantDefinition]] = None
 
 
 class DriftMetric(BaseModel):
@@ -32,10 +42,11 @@ class DriftMetric(BaseModel):
     baseline_value: float
     current_value: float
     change_pct: float
-    js_divergence: Optional[float] = None  # jensen shannon
+    js_divergence: Optional[float] = None
     ks_statistic: Optional[float] = None
     ks_pvalue: Optional[float] = None
     status: DriftStatus
+    normal_range: Optional[str] = None
 
 
 class DriftReport(BaseModel):
@@ -46,6 +57,7 @@ class DriftReport(BaseModel):
     metrics: List[DriftMetric]
     alerts: List[str]
     thresholds_used: Dict[str, float]
+    normal_definitions: Optional[Dict[str, str]] = None
 
 
 class CanaryJournalResult(BaseModel):
@@ -71,6 +83,8 @@ class CanaryReport(BaseModel):
     action_reason: str
     per_journal: List[CanaryJournalResult]
     thresholds_used: Dict[str, float]
+    threshold_rationale: Optional[str] = None
+    run_frequency: Optional[str] = None
 
 
 class SummaryReport(BaseModel):

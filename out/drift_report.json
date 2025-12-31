@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-12-31T19:29:59.498142",
+  "run_id": "drift-20251231-192959-7d884f",
+  "baseline_source": "parser_outputs_day0.jsonl",
+  "current_source": "parser_outputs_day1.jsonl",
+  "metrics": [
+    {
+      "name": "extraction_volume",
+      "baseline_value": 1.15,
+      "current_value": 1.5,
+      "change_pct": 30.4,
+      "js_divergence": null,
+      "ks_statistic": null,
+      "ks_pvalue": null,
+      "status": "DRIFT",
+      "normal_range": null
+    },
+    {
+      "name": "uncertainty_rate",
+      "baseline_value": 0.435,
+      "current_value": 0.367,
+      "change_pct": -6.8,
+      "js_divergence": null,
+      "ks_statistic": null,
+      "ks_pvalue": null,
+      "status": "STABLE",
+      "normal_range": null
+    },
+    {
+      "name": "domain_mix",
+      "baseline_value": 0.348,
+      "current_value": 0.3,
+      "change_pct": -13.8,
+      "js_divergence": 0.0224,
+      "ks_statistic": null,
+      "ks_pvalue": null,
+      "status": "STABLE",
+      "normal_range": null
+    },
+    {
+      "name": "arousal_distribution",
+      "baseline_value": 0.5,
+      "current_value": 1.0,
+      "change_pct": 100.0,
+      "js_divergence": 0.2158,
+      "ks_statistic": null,
+      "ks_pvalue": null,
+      "status": "BREAKAGE",
+      "normal_range": null
+    },
+    {
+      "name": "intensity_distribution",
+      "baseline_value": 0.667,
+      "current_value": 0.455,
+      "change_pct": -31.8,
+      "js_divergence": 0.1061,
+      "ks_statistic": null,
+      "ks_pvalue": null,
+      "status": "DRIFT",
+      "normal_range": null
+    },
+    {
+      "name": "confidence_distribution",
+      "baseline_value": 0.717,
+      "current_value": 0.673,
+      "change_pct": -6.1,
+      "js_divergence": null,
+      "ks_statistic": 0.23333333333333334,
+      "ks_pvalue": 0.3999233760720203,
+      "status": "STABLE",
+      "normal_range": null
+    }
+  ],
+  "alerts": [
+    "WARNING: extraction volume changed +30.4%",
+    "WARNING: mind domain surged +17.0% (was 13.0%, now 30.0%)",
+    "CRITICAL: arousal collapsed to 100% high",
+    "CRITICAL: significant arousal distribution shift detected"
+  ],
+  "thresholds_used": {
+    "js_drift": 0.1,
+    "js_breakage": 0.2,
+    "domain_shift_pct": 15.0,
+    "volume_change_pct": 25.0
+  },
+  "normal_definitions": {
+    "extraction_volume": "1-2 items per journal, zero_rate < 10%",
+    "uncertainty_rate": "< 40% of items with unknown/low confidence",
+    "domain_mix": "symptom 30-40%, food 20-30%, emotion 20-30%, mind 10-20%",
+    "arousal_distribution": "low 30-40%, medium 30-40%, high 20-30%",
+    "intensity_distribution": "low 20-30%, medium 40-50%, high 20-30%",
+    "confidence_distribution": "mean > 0.6, std < 0.2"
+  }
+}

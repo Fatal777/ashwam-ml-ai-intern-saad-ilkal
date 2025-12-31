@@ -4,12 +4,7 @@ from ..models.enums import Domain
 
 
 def compute_uncertainty_rate(items: List[ParserItem]) -> float:
-    """
-    proportion of items with unknown or uncertain values
-    - intensity_bucket = unknown
-    - emotion without arousal_bucket
-    - low confidence < 0.5
-    """
+    # proportion of items with unknown/uncertain values (intensity=unknown, emotion missing arousal, confidence<0.5)
     if not items:
         return 0.0
 
@@ -33,9 +28,7 @@ def compute_uncertainty_rate(items: List[ParserItem]) -> float:
 
 
 def compute_extraction_volume(outputs: List[ParserOutput]) -> dict:
-    """
-    stats about number of items per journal
-    """
+    # stats about number of items per journal
     if not outputs:
         return {"mean": 0, "std": 0, "zero_rate": 0}
 
@@ -55,9 +48,7 @@ def compute_extraction_volume(outputs: List[ParserOutput]) -> dict:
 
 
 def compute_domain_distribution(items: List[ParserItem]) -> dict:
-    """
-    percentage of each domain in extraction
-    """
+    # percentage of each domain in extraction
     if not items:
         return {}
 
@@ -71,9 +62,7 @@ def compute_domain_distribution(items: List[ParserItem]) -> dict:
 
 
 def compute_arousal_distribution(items: List[ParserItem]) -> dict:
-    """
-    arousal bucket distribution for emotion domain only
-    """
+    # arousal bucket distribution for emotion domain only
     emotion_items = [i for i in items if i.domain == Domain.EMOTION and i.arousal_bucket]
     if not emotion_items:
         return {}
@@ -88,9 +77,7 @@ def compute_arousal_distribution(items: List[ParserItem]) -> dict:
 
 
 def compute_intensity_distribution(items: List[ParserItem]) -> dict:
-    """
-    intensity bucket distribution for non-emotion domains
-    """
+    # intensity bucket distribution for non-emotion domains
     relevant = [i for i in items if i.domain != Domain.EMOTION and i.intensity_bucket]
     if not relevant:
         return {}

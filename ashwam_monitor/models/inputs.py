@@ -41,7 +41,7 @@ class JournalEntry(BaseModel):
 
 
 class GoldItem(BaseModel):
-    """canary gold labels - doesnt have text or confidence"""
+    # canary gold labels - doesnt have text or confidence
     domain: Domain
     evidence_span: str
     polarity: Polarity

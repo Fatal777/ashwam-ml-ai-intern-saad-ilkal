@@ -5,18 +5,13 @@ from typing import List, Tuple, Dict
 
 
 def jensen_shannon_divergence(p: List[float], q: List[float]) -> float:
-    """
-    symmetric measure of distribution divergence
-    returns 0 to 1 where 0 is identical
-    """
+    # symmetric measure of distribution divergence, returns 0 to 1 where 0 is identical
     p = np.asarray(p, dtype=float)
     q = np.asarray(q, dtype=float)
 
-    # handle zeros
     p = np.clip(p, 1e-10, None)
     q = np.clip(q, 1e-10, None)
 
-    # normalize
     p = p / p.sum()
     q = q / q.sum()
 
@@ -24,30 +19,26 @@ def jensen_shannon_divergence(p: List[float], q: List[float]) -> float:
     return float(0.5 * (entropy(p, m) + entropy(q, m)))
 
 
+import warnings
+
 def ks_test(baseline: List[float], current: List[float]) -> Tuple[float, float]:
-    """
-    kolmogorov smirnov test
-    returns (statistic, pvalue)
-    pvalue < 0.05 means distributions are significantly different
-    """
+    # kolmogorov smirnov test, returns (statistic, pvalue), pvalue < 0.05 means significantly different
     if len(baseline) < 2 or len(current) < 2:
         return 0.0, 1.0
 
-    stat, pval = stats.ks_2samp(baseline, current)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        stat, pval = stats.ks_2samp(baseline, current)
     return float(stat), float(pval)
 
 
 def chi_squared_test(baseline_counts: Dict[str, int], current_counts: Dict[str, int]) -> Tuple[float, float]:
-    """
-    chi squared for categorical distributions
-    returns (statistic, pvalue)
-    """
+    # chi squared for categorical distributions, returns (statistic, pvalue)
     categories = sorted(set(baseline_counts.keys()) | set(current_counts.keys()))
 
     observed = [current_counts.get(c, 0) for c in categories]
     expected = [baseline_counts.get(c, 0) for c in categories]
 
-    # scale expected to match observed total
     total_obs = sum(observed)
     total_exp = sum(expected)
 
@@ -56,7 +47,6 @@ def chi_squared_test(baseline_counts: Dict[str, int], current_counts: Dict[str, 
 
     expected = [e * total_obs / total_exp for e in expected]
 
-    # filter out zeros
     valid = [(o, e) for o, e in zip(observed, expected) if e > 0]
     if len(valid) < 2:
         return 0.0, 1.0
@@ -69,10 +59,7 @@ def chi_squared_test(baseline_counts: Dict[str, int], current_counts: Dict[str, 
 
 
 def compute_distribution(items: List, key_fn) -> Dict[str, float]:
-    """
-    compute percentage distribution for a list of items
-    key_fn extracts the category from each item
-    """
+    # compute percentage distribution for a list of items, key_fn extracts category
     if not items:
         return {}
 

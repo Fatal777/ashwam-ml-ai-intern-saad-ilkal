@@ -4,7 +4,7 @@ from typing import Callable, List, Any
 
 @dataclass
 class InvariantDefinition:
-    """metadata for each invariant check"""
+    # metadata for each invariant check
     name: str
     description: str
     why_exists: str

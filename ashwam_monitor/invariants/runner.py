@@ -3,7 +3,7 @@ from datetime import datetime
 import uuid
 
 from ..models.inputs import ParserOutput
-from ..models.outputs import InvariantReport, InvariantViolation
+from ..models.outputs import InvariantReport, InvariantViolation, InvariantDefinition as OutputDef
 from ..models.enums import AlertLevel
 from ..config import config
 
@@ -17,21 +17,17 @@ def run_invariant_checks(
     outputs: List[ParserOutput],
     journals: Dict[str, str]
 ) -> InvariantReport:
-    """
-    run all invariant checks and build a report
-    """
+    # run all invariant checks and build a report
     run_id = f"inv-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
     total_items = sum(len(o.items) for o in outputs)
     total_journals = len(outputs)
 
-    # run each check
     schema_rate, schema_violations = compute_schema_validity(outputs)
     evidence_rate, evidence_violations = compute_evidence_validity(outputs, journals)
     hall_rate, hallucinations, hall_clusters = find_hallucinations(outputs, journals)
     contra_rate, contradictions = find_contradictions(outputs)
 
-    # build violation list
     violations = []
 
     for v in schema_violations:
@@ -65,7 +61,6 @@ def run_invariant_checks(
                 severity=AlertLevel.CRITICAL
             ))
 
-    # generate alerts
     alerts = []
     thresholds = config.invariants
 
@@ -78,10 +73,22 @@ def run_invariant_checks(
     if contra_rate > thresholds.max_contradiction_rate:
         alerts.append(f"CRITICAL: contradiction rate {contra_rate:.1%} exceeds threshold {thresholds.max_contradiction_rate:.0%}")
 
-    # log systematic hallucinations
     for span, count in hall_clusters.items():
         if count > 1:
             alerts.append(f"WARNING: systematic hallucination '{span}' appears {count} times")
+
+    # convert definitions to output format
+    defs = [
+        OutputDef(
+            name=d.name,
+            description=d.description,
+            why_exists=d.why_exists,
+            risk_mitigated=d.risk_mitigated,
+            failure_action=d.failure_action,
+            threshold=d.threshold
+        )
+        for d in ALL_INVARIANTS
+    ]
 
     return InvariantReport(
         timestamp=datetime.now(),
@@ -99,5 +106,6 @@ def run_invariant_checks(
             "min_evidence_validity": thresholds.min_evidence_validity,
             "max_hallucination_rate": thresholds.max_hallucination_rate,
             "max_contradiction_rate": thresholds.max_contradiction_rate
-        }
+        },
+        definitions=defs
     )

@@ -95,7 +95,9 @@ def run_canary_evaluation(
             "f1_human_review": thresholds.f1_human_review,
             "f1_rollback": thresholds.f1_rollback,
             "min_evidence_match": thresholds.min_evidence_match
-        }
+        },
+        threshold_rationale=thresholds.threshold_rationale,
+        run_frequency=thresholds.run_frequency
     )
 
 
