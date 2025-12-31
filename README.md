@@ -130,7 +130,7 @@ python -m ashwam_monitor canary --canary-dir ./data/canary --outputs ./data/pars
 python -m ashwam_monitor review-queue --invariant-report ./out/invariant_report.json
 ```
 
-**Run advanced analysis (wow factor):**
+**Run advanced analysis:**
 ```bash
 python -m ashwam_monitor analyze --data ./data --out ./out
 ```
