@@ -425,31 +425,6 @@ flowchart TD
 - **For 10K+ journals:** Would need streaming or chunked processing
 - **For real-time:** Would need Redis queue + worker architecture
 
----
-
-## Week 1 Launch Checklist
-
-### Pre-Launch (Day -1)
-- [ ] Run full monitoring on production-like data
-- [ ] Verify all thresholds are appropriate for your data
-- [ ] Set up alerting webhooks (Slack/PagerDuty)
-- [ ] Document on-call runbook
-- [ ] Baseline Day 0 outputs saved
-
-### Day 1
-- [ ] Run monitoring with `--dry-run` first
-- [ ] Check for any CRITICAL alerts
-- [ ] Review first batch of human review items
-- [ ] Monitor canary F1 closely
-
-### Day 2-7
-- [ ] Track drift metrics daily
-- [ ] Tune thresholds based on false positive rate
-- [ ] Review escalation queue
-- [ ] Document any new failure patterns
-
----
-
 ## Project Structure
 
 ```
@@ -611,13 +586,5 @@ End-to-end: Data flows through the CLI → loaders parse JSONL → invariant che
 11. **Async processing** - Parallelize invariant checks across journals
 
 ---
-
-### Questions I'd Ask Before Production
-
-1. **"What's the actual clinician hourly budget?"** - Affects queue prioritization and daily batch limits
-2. **"Is the parser deterministic or stochastic?"** - Would need multiple runs and averaging if stochastic
-3. **"What's the rollback window?"** - If rollback takes hours, need earlier warning thresholds
-4. **"Are mental health extractions more sensitive?"** - Might need domain-specific thresholds
-5. **"Should baseline drift with model improvements?"** - Static Day 0 vs sliding window
 
 See [DESIGN.md](./DESIGN.md) for full trade-off analysis and design rationale.

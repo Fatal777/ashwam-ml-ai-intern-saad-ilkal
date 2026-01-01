@@ -1,0 +1,121 @@
+{
+  "timestamp": "2025-12-31T22:36:43.541382",
+  "run_id": "inv-20251231-223643-37af13",
+  "total_items": 30,
+  "total_journals": 20,
+  "schema_validity_rate": 1.0,
+  "evidence_validity_rate": 0.8,
+  "hallucination_rate": 0.2,
+  "contradiction_rate": 0.03333333333333333,
+  "violations": [
+    {
+      "journal_id": "C003",
+      "item_index": 2,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C004",
+      "item_index": 2,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C007",
+      "item_index": 2,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C009",
+      "item_index": 3,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C015",
+      "item_index": 0,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C016",
+      "item_index": 2,
+      "invariant_name": "hallucination",
+      "violation_type": "evidence_not_found",
+      "details": "span 'intrusive thoughts' not in source",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C016",
+      "item_index": 1,
+      "invariant_name": "contradiction",
+      "violation_type": "polarity_conflict",
+      "details": "span 'no cramps today' has conflicting polarity",
+      "severity": "CRITICAL"
+    },
+    {
+      "journal_id": "C016",
+      "item_index": 3,
+      "invariant_name": "contradiction",
+      "violation_type": "polarity_conflict",
+      "details": "span 'no cramps today' has conflicting polarity",
+      "severity": "CRITICAL"
+    }
+  ],
+  "alerts": [
+    "CRITICAL: hallucination rate 20.0% exceeds threshold 5%",
+    "CRITICAL: contradiction rate 3.3% exceeds threshold 1%",
+    "WARNING: systematic hallucination 'intrusive thoughts' appears 6 times"
+  ],
+  "thresholds_used": {
+    "min_schema_validity": 0.95,
+    "min_evidence_validity": 0.9,
+    "max_hallucination_rate": 0.05,
+    "max_contradiction_rate": 0.01
+  },
+  "definitions": [
+    {
+      "name": "schema_validity",
+      "description": "percentage of items with valid schema",
+      "why_exists": "parser outputs power downstream features and if schema is bad everything breaks",
+      "risk_mitigated": "app crashes corrupted health records broken integrations",
+      "failure_action": "rate below 95% block batch and alert engineering - below 80% trigger incident",
+      "threshold": 0.95
+    },
+    {
+      "name": "evidence_validity",
+      "description": "percentage of items whose evidence span exists in source journal",
+      "why_exists": "extractions must be grounded in actual user words - fabricated evidence in health app is dangerous",
+      "risk_mitigated": "health anxiety from false positives incorrect self care erosion of trust",
+      "failure_action": "rate below 90% queue for clinician review - below 80% block batch investigate model",
+      "threshold": 0.9
+    },
+    {
+      "name": "hallucination_rate",
+      "description": "percentage of items with evidence span NOT found in source",
+      "why_exists": "direct measure of fabricated content - hallucinated symptoms could cause unnecessary alarm",
+      "risk_mitigated": "false health signals anxiety incorrect tracking potential clinical harm",
+      "failure_action": "rate above 5% escalate to clinical review - above 10% block batch trigger incident",
+      "threshold": 0.05
+    },
+    {
+      "name": "contradiction_rate",
+      "description": "rate of same evidence span with conflicting polarity",
+      "why_exists": "contradictions are especially harmful - telling user cramps present AND absent destroys trust",
+      "risk_mitigated": "user confusion incorrect health decisions clinical harm liability",
+      "failure_action": "any contradiction flag both items for human review - rate above 1% alert engineering",
+      "threshold": 0.01
+    }
+  ]
+}

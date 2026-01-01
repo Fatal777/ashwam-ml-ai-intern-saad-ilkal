@@ -1,0 +1,156 @@
+{
+  "diff_visualization": "==================================================\nDRIFT VISUALIZATION: Day 0 \u2192 Day 1\n==================================================\nextraction_volume: 1.15 \u2192 1.5 (+30.4%) \u2b06\ufe0f\u2b06\ufe0f \ud83d\udfe1 DRIFT\nuncertainty_rate: 0.435 \u2192 0.367 (-6.8%) \u2193 \u2705 STABLE\ndomain_mix: 0.348 \u2192 0.3 (-13.8%) \u2193 \u2705 STABLE\narousal_distribution: 0.5 \u2192 1.0 (+100.0%) \u2b06\ufe0f\u2b06\ufe0f \ud83d\udd34 BREAKAGE\n  \u2514\u2500 JSD: 0.2158\nintensity_distribution: 0.667 \u2192 0.455 (-31.8%) \u2b07\ufe0f\u2b07\ufe0f \ud83d\udfe1 DRIFT\n  \u2514\u2500 JSD: 0.1061\nconfidence_distribution: 0.717 \u2192 0.673 (-6.1%) \u2193 \u2705 STABLE\n",
+  "diagnosis": {
+    "patterns_detected": [
+      {
+        "type": "systematic_hallucination",
+        "pattern": "intrusive thoughts",
+        "occurrences": 6,
+        "description": "'intrusive thoughts' appears 6 times but never in source text"
+      },
+      {
+        "type": "polarity_confusion",
+        "occurrences": 2,
+        "description": "Parser is extracting same evidence with opposite polarity"
+      },
+      {
+        "type": "hot_journal",
+        "journal_id": "C016",
+        "violations": 3,
+        "description": "Journal C016 has 3 violations - may be adversarial or edge case"
+      }
+    ],
+    "likely_causes": [
+      "Parser prompt may contain 'intrusive thoughts' as an example, causing over-extraction",
+      "Parser may not handle negation words (no, not, without) correctly"
+    ],
+    "recommended_actions": [
+      "Review parser prompt for leading examples containing 'intrusive thoughts'",
+      "Add negation examples to parser prompt training",
+      "Review hot journals for unusual patterns or adversarial content"
+    ],
+    "severity": "high"
+  },
+  "confidence_intervals": {
+    "sample_size": 30,
+    "confidence_level": "95%",
+    "metrics": {
+      "hallucination_rate": {
+        "point_estimate": 0.2,
+        "lower_bound": 0.095,
+        "upper_bound": 0.3731,
+        "margin_of_error": 0.139,
+        "display": "20.0% \u00b1 13.9%"
+      },
+      "contradiction_rate": {
+        "point_estimate": 0.03333333333333333,
+        "lower_bound": 0.0059,
+        "upper_bound": 0.1667,
+        "margin_of_error": 0.0804,
+        "display": "3.3% \u00b1 8.0%"
+      },
+      "evidence_validity_rate": {
+        "point_estimate": 0.8,
+        "lower_bound": 0.6269,
+        "upper_bound": 0.905,
+        "margin_of_error": 0.139,
+        "display": "80.0% \u00b1 13.9%"
+      },
+      "schema_validity_rate": {
+        "point_estimate": 1.0,
+        "lower_bound": 0.8865,
+        "upper_bound": 1,
+        "margin_of_error": 0.0568,
+        "display": "100.0% \u00b1 5.7%"
+      }
+    },
+    "interpretation": "Statistically significant: hallucination rate 20.0% exceeds 5% threshold even at lower 95% CI bound (9.5%)"
+  },
+  "timeline": [
+    {
+      "day": 1,
+      "date": "2025-12-25",
+      "status": "GREEN",
+      "icon": "\u2705",
+      "events": [
+        "System initialized with baseline metrics"
+      ],
+      "hallucination_rate": 0.02,
+      "canary_f1": 0.75
+    },
+    {
+      "day": 2,
+      "date": "2025-12-26",
+      "status": "GREEN",
+      "icon": "\u2705",
+      "events": [
+        "Normal operation"
+      ],
+      "hallucination_rate": 0.03,
+      "canary_f1": 0.73
+    },
+    {
+      "day": 3,
+      "date": "2025-12-27",
+      "status": "YELLOW",
+      "icon": "\ud83d\udfe1",
+      "events": [
+        "Uncertainty rate elevated (+8%)",
+        "Mind domain extraction increased"
+      ],
+      "hallucination_rate": 0.04,
+      "canary_f1": 0.68
+    },
+    {
+      "day": 4,
+      "date": "2025-12-28",
+      "status": "YELLOW",
+      "icon": "\ud83d\udfe1",
+      "events": [
+        "Domain mix shift detected",
+        "Arousal distribution changing"
+      ],
+      "hallucination_rate": 0.06,
+      "canary_f1": 0.62
+    },
+    {
+      "day": 5,
+      "date": "2025-12-29",
+      "status": "RED",
+      "icon": "\ud83d\udd34",
+      "events": [
+        "Hallucination spike: 20.0%",
+        "Systematic pattern detected: 'intrusive thoughts'",
+        "Canary F1 dropped below threshold"
+      ],
+      "hallucination_rate": 0.2,
+      "canary_f1": 0.435
+    },
+    {
+      "day": 6,
+      "date": "2025-12-30",
+      "status": "RED",
+      "icon": "\ud83d\udd34",
+      "events": [
+        "INCIDENT declared",
+        "Root cause identified: prompt update",
+        "Rollback initiated"
+      ],
+      "hallucination_rate": 0.2,
+      "canary_f1": 0.435
+    },
+    {
+      "day": 7,
+      "date": "2025-12-31",
+      "status": "GREEN",
+      "icon": "\u2705",
+      "events": [
+        "Rollback complete",
+        "Metrics returning to baseline",
+        "Post-mortem scheduled"
+      ],
+      "hallucination_rate": 0.03,
+      "canary_f1": 0.72
+    }
+  ]
+}

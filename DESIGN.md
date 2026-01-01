@@ -96,50 +96,6 @@ Contradictions are **especially harmful**:
 
 **When I would add it:** If clinicians need to batch-approve/reject items with notes.
 
----
-
-## Questions I'd Ask Before Production
-
-These questions would change design decisions:
-
-1. **"What's the actual clinician hourly budget?"**
-   - Current: 30 items/day limit is a guess
-   - Answer affects queue prioritization and escalation timing
-
-2. **"Is the parser deterministic or stochastic?"**
-   - If stochastic: need to run multiple times and average
-   - Affects canary evaluation methodology
-
-3. **"What's the rollback window?"**
-   - Current: assumes instant rollback is possible
-   - If rollback takes hours, need earlier warning thresholds
-
-4. **"Are there domain-specific safe vs unsafe categories?"**
-   - Current: treats all domains equally
-   - Mental health (mind/emotion) false positives might be more harmful than food tracking errors
-
-5. **"What's the baseline update cadence?"**
-   - Current: Day 0 is static reference
-   - If model improves over time, baseline should slide with it
-
-6. **"Is there a staging environment?"**
-   - Canary assumes production deployment
-   - Staging would allow safer validation before production
-
----
-
-## Trade-offs Accepted
-
-| Trade-off | Chose | Over | Because |
-|-----------|-------|------|---------|
-| Simplicity | Substring match | Semantic search | Lower latency, fewer failure modes |
-| Conservatism | Strict thresholds | High recall | Health app - false positives are harmful |
-| Transparency | Full reports | Summary only | Reviewer needs details for debugging |
-| Determinism | Fixed thresholds | Learned thresholds | Explainability > adaptability |
-| Memory | Load all in RAM | Streaming | Simpler, sufficient for batch sizes |
-
----
-
 ## If I Had More Time
 
 **Production Scale:**
